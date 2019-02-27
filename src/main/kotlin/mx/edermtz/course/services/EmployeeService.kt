@@ -2,6 +2,8 @@ package mx.edermtz.course.services
 
 import mx.edermtz.course.models.Employee
 import org.springframework.stereotype.Service
+import reactor.core.publisher.Mono
+import reactor.core.publisher.toMono
 
 @Service
 class EmployeeService{
@@ -12,12 +14,14 @@ class EmployeeService{
 
 
     companion object {
-        val employeeDB  = mutableMapOf(1 to Employee(1,"John Long","Engineering", 500.00),
-        2 to Employee(1,"Peter Pan","HR",300.00)
+        val employeeDB  = mutableMapOf(1 to Employee(1,"John Long",20,"Engineering", 500.00),
+        2 to Employee(1,"Peter Pan",35,"HR",300.00)
         )
 
     }
 
     fun createEmployee(employee: Employee) = employeeDB.put(employee.id,employee)
+
+    fun getEmployee(id: Int) = employeeDB[1]?.toMono<Employee>()
 
 }
