@@ -37,4 +37,10 @@ class EmployeeController{
     fun updateEmployee(@PathVariable id: Int, @RequestBody updateEmployee: EmployeeUpdateReq){
         employeeService.updateEmployee(id,updateEmployee)
     }
+
+    @DeleteMapping("/employee/{id}")
+    fun deleteEmployee(@PathVariable id: Int): ResponseEntity<String>{
+        employeeService.deleteEmployee(id)
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build<String>()
+    }
 }

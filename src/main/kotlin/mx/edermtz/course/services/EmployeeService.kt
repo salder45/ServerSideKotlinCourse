@@ -39,4 +39,6 @@ class EmployeeService{
         ,updateEmployee.salary ?: employeeOnDB.salary)
     }
 
+    fun deleteEmployee(id: Int) = employeeDB.remove(id)
+
 }
