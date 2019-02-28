@@ -3,6 +3,7 @@ package mx.edermtz.course.services
 import mx.edermtz.course.models.Employee
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
+import reactor.core.publisher.toFlux
 import reactor.core.publisher.toMono
 
 @Service
@@ -23,5 +24,10 @@ class EmployeeService{
     fun createEmployee(employee: Employee) = employeeDB.put(employee.id,employee)
 
     fun getEmployee(id: Int) = employeeDB[1]?.toMono<Employee>()
+
+    fun getAllEmployees(minAge: Int?,minSalary: Double?)
+            = employeeDB.values.toFlux()
+        .filter{ it.age >= minAge ?: Int.MIN_VALUE}
+        .filter{ it.salary >= minSalary ?: Double.MIN_VALUE}
 
 }

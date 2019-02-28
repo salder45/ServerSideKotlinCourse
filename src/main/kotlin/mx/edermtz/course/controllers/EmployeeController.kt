@@ -1,6 +1,7 @@
 package mx.edermtz.course.controllers
 
 import mx.edermtz.course.models.Employee
+import mx.edermtz.course.services.DepartmentService
 import mx.edermtz.course.services.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -13,6 +14,9 @@ class EmployeeController{
     @Autowired
     lateinit var employeeService: EmployeeService
 
+    @Autowired
+    lateinit var departmentService: DepartmentService
+
     @PostMapping("/employee")
     fun createEmployee(@RequestBody employee: Employee): ResponseEntity<Employee>{
         employeeService.createEmployee(employee)
@@ -21,4 +25,10 @@ class EmployeeController{
 
     @GetMapping("/employee/{id}")
     fun getEmployee(@PathVariable("id") id: Int) = employeeService.getEmployee(id)
+
+    @GetMapping("/employee")
+    fun getEmployees(@RequestParam("minAge", required = false) minAge: Int?,@RequestParam("minSalary", required = false) minSalary: Double?) = employeeService.getAllEmployees(minAge, minSalary)
+
+    @GetMapping("/departments")
+    fun getAllDepartments()= departmentService.getAllDepartments()
 }
