@@ -1,6 +1,7 @@
 package mx.edermtz.course.controllers
 
 import mx.edermtz.course.models.Employee
+import mx.edermtz.course.models.EmployeeUpdateReq
 import mx.edermtz.course.services.DepartmentService
 import mx.edermtz.course.services.EmployeeService
 import org.springframework.beans.factory.annotation.Autowired
@@ -31,4 +32,9 @@ class EmployeeController{
 
     @GetMapping("/departments")
     fun getAllDepartments()= departmentService.getAllDepartments()
+
+    @PutMapping("employee/{id}")
+    fun updateEmployee(@PathVariable id: Int, @RequestBody updateEmployee: EmployeeUpdateReq){
+        employeeService.updateEmployee(id,updateEmployee)
+    }
 }

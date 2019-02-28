@@ -1,6 +1,7 @@
 package mx.edermtz.course.services
 
 import mx.edermtz.course.models.Employee
+import mx.edermtz.course.models.EmployeeUpdateReq
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import reactor.core.publisher.toFlux
@@ -29,5 +30,13 @@ class EmployeeService{
             = employeeDB.values.toFlux()
         .filter{ it.age >= minAge ?: Int.MIN_VALUE}
         .filter{ it.salary >= minSalary ?: Double.MIN_VALUE}
+
+
+    fun updateEmployee(id: Int, updateEmployee: EmployeeUpdateReq){
+        val employeeOnDB = employeeDB[id]!!
+        employeeDB[id] = Employee(employeeOnDB.id
+        ,employeeOnDB.name,employeeOnDB.age,updateEmployee.department ?: employeeOnDB.department
+        ,updateEmployee.salary ?: employeeOnDB.salary)
+    }
 
 }
