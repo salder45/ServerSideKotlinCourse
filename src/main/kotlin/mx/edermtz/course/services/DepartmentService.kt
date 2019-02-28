@@ -10,7 +10,7 @@ class DepartmentService{
     lateinit var employeeService: EmployeeService
 
     fun getAllDepartments()
-            = employeeService.getAllEmployees(null,null)
+            = employeeService.getAllEmployees()
         .map { it.department }
         .distinct()
 

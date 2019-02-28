@@ -25,7 +25,7 @@ class EmployeeService{
 
     fun getEmployee(id: Int) = employeeDB[1]?.toMono<Employee>()
 
-    fun getAllEmployees(minAge: Int?,minSalary: Double?)
+    fun getAllEmployees(minAge: Int? = null,minSalary: Double? = null)
             = employeeDB.values.toFlux()
         .filter{ it.age >= minAge ?: Int.MIN_VALUE}
         .filter{ it.salary >= minSalary ?: Double.MIN_VALUE}
