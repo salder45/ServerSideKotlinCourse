@@ -2,6 +2,8 @@ package mx.edermtz.course.services
 
 import mx.edermtz.course.models.Employee
 import mx.edermtz.course.models.EmployeeUpdateReq
+import mx.edermtz.course.repository.EmployeeRepo
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import reactor.core.publisher.toFlux
@@ -10,35 +12,30 @@ import reactor.core.publisher.toMono
 @Service
 class EmployeeService{
 
-    val employeeMap = hashMapOf(1 to "Alberto", 2 to "Peter", 3 to "John")
 
-    fun findEmployee(id: Int): String = employeeMap[id] ?: "Not_Found"
+    @Autowired
+    lateinit var employeeDB: EmployeeRepo
 
 
-    companion object {
-        val employeeDB  = mutableMapOf(1 to Employee(1,"John Long",20,"Engineering", 500.00),
-        2 to Employee(1,"Peter Pan",35,"HR",300.00)
-        )
+    fun createEmployee(employee: Employee) = employeeDB.save(employee)
 
-    }
-
-    fun createEmployee(employee: Employee) = employeeDB.put(employee.id,employee)
-
-    fun getEmployee(id: Int) = employeeDB[1]?.toMono<Employee>()
+    fun getEmployee(id: Int) = employeeDB.findById(id)
 
     fun getAllEmployees(minAge: Int? = null,minSalary: Double? = null)
-            = employeeDB.values.toFlux()
+            = employeeDB.findAll()
         .filter{ it.age >= minAge ?: Int.MIN_VALUE}
         .filter{ it.salary >= minSalary ?: Double.MIN_VALUE}
 
 
-    fun updateEmployee(id: Int, updateEmployee: EmployeeUpdateReq){
-        val employeeOnDB = employeeDB[id]!!
-        employeeDB[id] = Employee(employeeOnDB.id
-        ,employeeOnDB.name,employeeOnDB.age,updateEmployee.department ?: employeeOnDB.department
-        ,updateEmployee.salary ?: employeeOnDB.salary)
-    }
+    fun updateEmployee(id: Int, updateEmployee: EmployeeUpdateReq) =
+        employeeDB.findById(id).flatMap{
+            it.department = updateEmployee.department ?: it.department
+            it.salary = updateEmployee.salary ?: it.salary
+            employeeDB.save(it)
+        }
 
-    fun deleteEmployee(id: Int) = employeeDB.remove(id)
+
+
+    fun deleteEmployee(id: Int) = employeeDB.deleteById(id)
 
 }

@@ -2,5 +2,7 @@ package mx.edermtz.course.repository
 
 import mx.edermtz.course.models.Employee
 import org.springframework.data.cassandra.repository.ReactiveCassandraRepository
+import org.springframework.stereotype.Repository
 
-interface EmployeeRepo: ReactiveCassandraRepository<Int, Employee>
+@Repository
+interface EmployeeRepo: ReactiveCassandraRepository<Employee, Int>

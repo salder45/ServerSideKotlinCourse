@@ -14,7 +14,7 @@ class Controller{
 
     @GetMapping("/{id}")
     fun getName(@PathVariable("id") id: Int): String{
-        return "Name: ${employeeService.findEmployee(id)}"
+        return "Name: "
     }
 
 }

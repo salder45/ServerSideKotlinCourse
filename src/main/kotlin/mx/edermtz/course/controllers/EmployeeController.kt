@@ -19,10 +19,9 @@ class EmployeeController{
     lateinit var departmentService: DepartmentService
 
     @PostMapping("/employee")
-    fun createEmployee(@RequestBody employee: Employee): ResponseEntity<Employee>{
-        employeeService.createEmployee(employee)
-        return ResponseEntity<Employee>(HttpStatus.CREATED)
-    }
+    fun createEmployee(@RequestBody employee: Employee)= employeeService.createEmployee(employee)
+        .map{ _ -> ResponseEntity.status(HttpStatus.CREATED).build<String>() }
+
 
     @GetMapping("/employee/{id}")
     fun getEmployee(@PathVariable("id") id: Int) = employeeService.getEmployee(id)
@@ -34,13 +33,14 @@ class EmployeeController{
     fun getAllDepartments()= departmentService.getAllDepartments()
 
     @PutMapping("employee/{id}")
-    fun updateEmployee(@PathVariable id: Int, @RequestBody updateEmployee: EmployeeUpdateReq){
+    fun updateEmployee(@PathVariable id: Int, @RequestBody updateEmployee: EmployeeUpdateReq) =
         employeeService.updateEmployee(id,updateEmployee)
-    }
+            .map { _ -> ResponseEntity.status(HttpStatus.OK).build<String>()}
+
 
     @DeleteMapping("/employee/{id}")
-    fun deleteEmployee(@PathVariable id: Int): ResponseEntity<String>{
-        employeeService.deleteEmployee(id)
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build<String>()
-    }
+    fun deleteEmployee(@PathVariable id: Int) = employeeService.deleteEmployee(id)
+        .map {_ -> ResponseEntity.status(HttpStatus.NOT_FOUND).build<String>() }
+
 }
+
