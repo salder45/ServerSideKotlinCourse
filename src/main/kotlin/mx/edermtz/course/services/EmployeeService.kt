@@ -19,7 +19,7 @@ class EmployeeService{
 
     fun createEmployee(employee: Employee) = employeeDB.save(employee)
 
-    fun getEmployee(id: Int) = employeeDB.findById(id)
+    fun getEmployee(id: String) = employeeDB.findById(id)
 
     fun getAllEmployees(minAge: Int? = null,minSalary: Double? = null)
             = employeeDB.findAll()
@@ -27,7 +27,7 @@ class EmployeeService{
         .filter{ it.salary >= minSalary ?: Double.MIN_VALUE}
 
 
-    fun updateEmployee(id: Int, updateEmployee: EmployeeUpdateReq) =
+    fun updateEmployee(id: String, updateEmployee: EmployeeUpdateReq) =
         employeeDB.findById(id).flatMap{
             it.department = updateEmployee.department ?: it.department
             it.salary = updateEmployee.salary ?: it.salary
@@ -36,6 +36,6 @@ class EmployeeService{
 
 
 
-    fun deleteEmployee(id: Int) = employeeDB.deleteById(id)
+    fun deleteEmployee(id: String) = employeeDB.deleteById(id)
 
 }
